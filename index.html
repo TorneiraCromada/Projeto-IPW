@@ -26,26 +26,41 @@
         </div>
     </header>
     <body>
-      <div class="carousel ">
+      <div class="carousel">
+        <button class="prev">◄</button>
+        <ul>
+            <li><h2>Slide 1 — Lorem ipsum dolor sit amet...</h2></li>
+            <li><h2>Slide 2 — Lorem ipsum dolor sit amet...</h2></li>
+            <li><h2>Slide 3 — Lorem ipsum dolor sit amet...</h2></li>
+            <li><h2>Slide 4 — Lorem ipsum dolor sit amet...</h2></li>
+        </ul>
+        <button class="next"> ►</button>
+    </div>
 
-            <br><br>
-            <ul>
-                <li>
-                    <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe enim odio voluptate natus voluptatem hic nihil sed, autem nemo alias libero ab repellat quis, molestiae qui similique perspiciatis tempora veniam.</h2>
-                </li>
-                <li>
-                    <h2>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iure saepe nesciunt ipsum soluta consectetur inventore reiciendis quisquam perferendis porro architecto odit veniam provident, eos ullam labore possimus delectus facere pariatur.</h2>
-                </li>
-                <li>
-                    <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos unde et ut. Ratione quas quisquam tenetur suscipit. Numquam, aliquam? Voluptatem eligendi ut esse cum dolores aspernatur sit ratione hic fugit!</h2>
-                </li>
-                <li>
-                    <h2>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt id cupiditate quisquam hic magni accusamus, ipsa obcaecati reiciendis provident molestiae repudiandae optio sit culpa alias labore, nihil nulla reprehenderit illo?</h2>
-                </li>
-            </ul>
-        </div>
     </body>
     <footer>
 
     </footer>
 </html>
+<script>
+  const carousel = document.querySelector('.carousel ul');
+  const slides = document.querySelectorAll('.carousel li');
+  const btnPrev = document.querySelector('.carousel .prev');
+  const btnNext = document.querySelector('.carousel .next');
+  let index = 0;
+    function updateButtons() {
+    btnPrev.disabled = index === 0;
+    btnNext.disabled = index === slides.length - 1;
+    }
+  function showSlide(i) {
+    index = Math.max(0, Math.min(i, slides.length - 1));
+    carousel.scrollTo({
+      left: slides[index].offsetLeft,
+      behavior: 'smooth'
+    });
+    updateButtons();
+  }
+
+  btnPrev.addEventListener('click', () => showSlide(index - 1));
+  btnNext.addEventListener('click', () => showSlide(index + 1));
+</script>
