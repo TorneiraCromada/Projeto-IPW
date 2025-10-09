@@ -1,122 +1,14 @@
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-header {
-    background-color: #0f172a;
-    color: white;
-    padding: 0.75rem 2rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* logo left, nav right */
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* LOGO */
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo img {
-    height: 40px;
-}
-
-.logo h1 {
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-/* NAV LINKS */
-.nav-links {
-    list-style: none;
-    display: flex; /* horizontal row */
-    gap: 2rem;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: white;
-    font-weight: 500;
-    transition: color 0.2s ease-in-out;
-}
-
-.nav-links a:hover {
-    color: #38bdf8;
-}
-
-
-@media (max-width: 768px) {
-    .nav-links {
-    display: none;
-    }
-}
-
-
-.user{
-
-    display: flex;
-    margin-right: 0px;
-    gap: 10px;
-}
-
-.user img {
-    height: 40px;
-    border-radius:20px ;
-}
-:hover .user img {
-    cursor:pointer;
-}
-
-.carousels ul {
-  width: 100vw;
-  height: 300px;
-  padding: 20px;
-  display: flex;
-  gap: 4vw;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
-}
-
-.carousels li {
-  list-style-type: none;
-  background-color: #eeeeee;
-  border: 1px solid #dddddd;
-  padding: 20px;
-  scroll-snap-align: center;
-  flex: 0 0 100%;
-}
-
-.carousels li:nth-child(even) {
-  background-color: cyan;
-}
-
-
-
-
-
-
-
  .carousel ul { /**/
-  width: 100%;
+  width: 90vw;
   height: 300px;
   padding: 20px;
   display: flex;
+  margin-left: 3.43vw;
   gap: 4vw;
   overflow-x: hidden;
   scroll-snap-type: x mandatory;
 }
 .carousel li {
-  width: 1920px;
   list-style-type: none;
   background-color: #eeeeee;
   border: 1px solid #dddddd;
