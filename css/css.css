@@ -171,17 +171,23 @@ header {
   visibility:hidden !important;
 }
 
-.artigoConteiner{
-  display: flex;
-  gap: 10px;
 
+
+.artigoConteiner{
+  margin:15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(450px, 1fr));
+  grid-gap: 20px;
 }
 
 .artigo1{
-  border: 2px solid #949494;
-  margin:10px 20px;
-  height: 45vh;
-  padding: 20px;
-  flex: 1;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-radius: 20px;
+  padding: 1rem;
 }
+
+
+
+
