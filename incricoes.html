@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="css/css.css">
+        <link rel="stylesheet" href="css/inscricoes.css">
     </head>
     <header>
         <div class="navbar">
@@ -17,75 +18,37 @@
             </div>
             <nav>
                 <ul class="nav-links">
-                    <li><a href="teste.html">Calendário</a></li>
-                    <li><a href="pagina2.html">Eventos</a></li>
-                    <li><a href="pagina3.html">Inscrições</a></li>
-                    <li><a href="pagina4.html">Sobre nós</a></li>
+                    <li><a href="calendario.html">Calendário</a></li>
+                    <li><a href="eventos.html">Eventos</a></li>
+                    <li><a href="incricoes.html">Inscrições</a></li>
+                    <li><a href="sobrenos.html">Sobre nós</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     <body>
-      <div class="carousel">
-        <button class="prev hidden"><</button>
-        <ul>
-            <li><h2>Slide 1 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 2 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 3 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 4 — Lorem ipsum dolor sit amet...</h2></li>
-        </ul>
-        <button class="next"> ></button>
-    </div>
-    <div class="artigoConteiner">
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
+    <div class="form-container">
+        <form class="formulario">
+            <label for="name">Nome</label>
+            <input type="text" name="name" id="name" placeholder="Insira seu nome">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="Insira seu email">
+
+            <label for="tlm">Telémovel:</label>
+            <input type="tel" name="tlm" id="tlm" placeholder="Insira seu número de telemóvel">
+
+            <label for="evento">Evento:</label>
+            <input type="text" name="evento" id="evento" placeholder="Insira o evento que se deseja inscrever em">
+
+            <label for="info">Informação Extra:</label>
+            <textarea rows="6" cols="50" name="info" id="info"></textarea>
+
+            <button type="submit">Enviar</button>
+        </form>
     </div>
     </body>
     <footer>
 
     </footer>
 </html>
-<script>
-    const carousel = document.querySelector('.carousel ul');
-    const slides = document.querySelectorAll('.carousel li');
-    const btnPrev = document.querySelector('.carousel .hidden');
-    const btnNext = document.querySelector('.carousel .next');
-    let index = 0;
-
-    function showSlide(i) {
-    index = Math.max(0, Math.min(i, slides.length - 1));
-    carousel.scrollTo({
-        left: slides[index].offsetLeft,
-        behavior: 'smooth'
-    });
-    updateButtons();
-    }
-
-    function updateButtons() {
-
-    if (index === 0) {
-        btnPrev.classList.add('hidden');
-    } else {
-        btnPrev.classList.remove('hidden');
-    }
-
-    if (index === slides.length - 1) {
-        btnNext.classList.add('hidden');
-    } else {
-        btnNext.classList.remove('hidden');
-    }
-    }
-
-    btnPrev.addEventListener('click', () => showSlide(index - 1));
-    btnNext.addEventListener('click', () => showSlide(index + 1));
-
-
-    updateButtons();
-</script>
