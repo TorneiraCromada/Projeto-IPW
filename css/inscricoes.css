@@ -1,0 +1,72 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #e6f5ea, #c9efd3);
+    color: #2d2d2d;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+}
+
+.formulario {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario label {
+    font-weight: 600;
+    color: #2e7d32;
+    margin-top: 1rem;
+}
+
+.formulario input,
+.formulario textarea {
+    margin-top: 0.3rem;
+    padding: 0.8rem;
+    border: 1.5px solid #b7e4c7;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    background-color: #ffffff;
+    resize: none;
+}
+
+.formulario input:focus,
+.formulario input:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 6px rgb(46, 125, 50)
+}
+
+.formulario button {
+    margin-top: 1.8rem;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.formulario button:hover {
+    background-color: #388e3c;
+}
+
+ @media (max-width: 600px){
+    .formulaio {
+        padding: 1.5rem;
+    }
+ }
