@@ -176,18 +176,31 @@ header {
 .artigoConteiner{
   margin:15px;
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(350px, 1fr));
+  grid-template-columns: repeat(3,minmax(350px, 1fr));
   grid-gap: 20px;
 }
 
-.artigo1{
+.artigo1 {
   display: flex;
   flex-direction: column;
-  border: 1px solid;
-  border-radius: 20px;
-  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
 }
 
+.artigo1 figure {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
 
-
-
+.artigo1 img {
+  width: 100%;
+  height: 100%;
+  background-color: #0f172a;
+  border:1px solid black;
+  object-fit: cover;
+  display: block;
+}
