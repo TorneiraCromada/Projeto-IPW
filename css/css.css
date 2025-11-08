@@ -20,10 +20,11 @@ header {
 }
 
 
-.logo {
+a.logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none !important;
 }
 
 .logo img {
@@ -34,6 +35,7 @@ header {
   font-size: 1.8rem;
   font-weight: 600;
   letter-spacing: 1px;
+  color: white;
 }
 
 
