@@ -27,35 +27,8 @@
         </div>
     </header>
     <body>
-      <div class="carousel">
-        <button class="prev hidden"><</button>
-        <ul>
-            <li><h2>Slide 1 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 2 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 3 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 4 — Lorem ipsum dolor sit amet...</h2></li>
-        </ul>
-        <button class="next">></button>
-    </div>
-    <div class="artigoConteiner">
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-               <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
+      
+    <div class="artigoConteiner" id="artigoConteiner">
     </div>
     </body>
     <footer>
@@ -63,39 +36,15 @@
     </footer>
 </html>
 <script>
-    const carousel = document.querySelector('.carousel ul');
-    const slides = document.querySelectorAll('.carousel li');
-    const btnPrev = document.querySelector('.carousel .hidden');
-    const btnNext = document.querySelector('.carousel .next');
-    let index = 0;
+    
+const container = document.getElementById('artigoConteiner');
+const numberOfArticles = 31;
 
-    function showSlide(i) {
-    index = Math.max(0, Math.min(i, slides.length - 1));
-    carousel.scrollTo({
-        left: slides[index].offsetLeft,
-        behavior: 'smooth'
-    });
-    updateButtons();
-    }
-
-    function updateButtons() {
-
-    if (index === 0) {
-        btnPrev.classList.add('hidden');
-    } else {
-        btnPrev.classList.remove('hidden');
-    }
-
-    if (index === slides.length - 1) {
-        btnNext.classList.add('hidden');
-    } else {
-        btnNext.classList.remove('hidden');
-    }
-    }
-
-    btnPrev.addEventListener('click', () => showSlide(index - 1));
-    btnNext.addEventListener('click', () => showSlide(index + 1));
-
-
-    updateButtons();
+for (let i = 0; i < numberOfArticles; i++) {
+    container.innerHTML += `
+        <article class="artigo">
+            <p>`+(i+1)+`</p>
+        </article>
+    `;
+}
 </script>

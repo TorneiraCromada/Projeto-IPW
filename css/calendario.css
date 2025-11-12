@@ -1,0 +1,21 @@
+.artigoConteiner {
+  margin: 15px;
+  display: grid;
+  grid-template-columns: repeat(7, 10vh);
+  grid-gap: 20px;
+  justify-content: center;
+  max-width: 1400px; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.artigo {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  height: 10vh;
+  width: 10vh;
+}
