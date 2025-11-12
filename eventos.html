@@ -27,19 +27,32 @@
         </div>
     </header>
     <body>
-    <div class="artigoConteiner">
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-        <article class="artigo1">
-            <p>Lorem Ipsum</p>
-        </article>
-    </div>
+        <div class="seilapo">
+            <figure><img src="/imgs/tempImg.png" alt="tempImg"></figure>
+            <p class="image-text"> EVENTOS</p>
+        </div>
+        <div class="artigoConteiner" id="artigoConteiner">
+
+        </div>
     </body>
     <footer>
 
     </footer>
 </html>
+<script>
+    
+const container = document.getElementById('artigoConteiner');
+const numberOfArticles = 8;
+
+for (let i = 0; i < numberOfArticles; i++) {
+    container.innerHTML += `
+        <article class="artigo">
+            <figure>
+                <img src="imgs/tempImg.png">
+            </figure>
+            <h3>Evento Legal e divertido</h3>
+            <p>loren ipsum</p>
+        </article>
+    `;
+}
+</script>

@@ -68,7 +68,7 @@
   grid-gap: 20px;
 }
 
-.artigo1 {
+.artigo {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
@@ -77,14 +77,14 @@
   background: #fff;
 }
 
-.artigo1 figure {
+.artigo figure {
   margin: 0;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
 }
 
-.artigo1 img {
+.artigo img {
   width: 100%;
   height: 100%;
   background-color: #0f172a;
