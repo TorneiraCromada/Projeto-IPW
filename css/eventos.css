@@ -1,8 +1,62 @@
 .artigoConteiner {
   margin: 15px;
   display: grid;
-  grid-template-columns: repeat(5, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
   grid-gap: 20px;
+}
+
+@media (max-width: 1920px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  }
+}
+
+@media (max-width: 1600px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+}
+
+@media (max-width: 1400px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    grid-gap: 15px;
+    margin: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .artigoConteiner {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    grid-gap: 10px;
+    margin: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .artigoConteiner {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    margin: 5px;
+  }
 }
 
 .artigo {
@@ -12,7 +66,7 @@
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
-  height: 50vh;
+  height: clamp(300px, 50vh, 500px);
 }
 
 .artigo figure {
@@ -20,6 +74,7 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .artigo img {
@@ -29,7 +84,12 @@
   border: 1px solid black;
   object-fit: cover;
   display: block;
-} 
+  transition: transform 0.3s ease;
+}
+
+.artigo:hover img {
+  transform: scale(1.05);
+}
 
 .seilapo {
   position: relative; 
@@ -43,17 +103,37 @@
   display: block;
   object-fit: cover;
   width: 100%;
-  height: 35vh;
+  height: clamp(200px, 35vh, 400px);
 }
 
 .seilapo .image-text{
   position: absolute;
   font-weight: 700;
-  font-size: 400%;
+  font-size: clamp(2rem, 8vw, 4rem);
   top: 50%;
   left: 50%;
-  -webkit-text-stroke: 2px black;
+  -webkit-text-stroke: clamp(1px, 0.5vw, 2px) black; 
   transform: translate(-50%, -50%);
   margin: 0;
   color: white;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.artigo {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.artigo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #e6f5ea, #c9efd3);
+  color: #2d2d2d;
+  min-height: 100vh;
 }
