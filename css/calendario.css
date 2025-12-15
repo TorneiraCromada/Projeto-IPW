@@ -1,70 +1,610 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", "Segoe UI", sans-serif;
-  background: linear-gradient(135deg, #e6f5ea, #c9efd3);
-  color: #2d2d2d;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.calendario-wrapper {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.mes-titulo {
+    font-size: 1.8rem;
+    color: #ffffff;
+    font-weight: 600;
+    margin: 0;
+}
+
+.controles-mes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-mes {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-mes:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+.btn-hoje {
+    background: #8bc34a;
+}
+
+.dias-semana-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dia-semana {
+    padding: 10px;
+    font-weight: bold;
+    color: #2d5016;
+    background: #f1f8e9;
+    border-radius: 5px;
+    font-size: 0.9rem;
 }
 
 .artigoConteiner {
-  margin: 10px auto; 
-  display: grid;
-  grid-template-columns: repeat(7, 10vh);
-  grid-gap: 5px; 
-  width: fit-content; 
-  padding: 0 2px; 
-  box-sizing: border-box;
-}
-
-@media (max-width: 1500px) {
-  .artigoConteiner {
-    grid-template-columns: repeat(6, 10vh);
-    grid-gap: 8px;
-  }
-}
-
-@media (max-width: 1300px) {
-  .artigoConteiner {
-    grid-template-columns: repeat(5, 10vh);
-    grid-gap: 10px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .artigoConteiner {
-    grid-template-columns: repeat(4, 10vh);
-    grid-gap: 12px;
-  }
-}
-
-@media (max-width: 900px) {
-  .artigoConteiner {
-    grid-template-columns: repeat(3, 10vh);
-    grid-gap: 15px;
-  }
-}
-
-@media (max-width: 600px) {
-  .artigoConteiner {
-    grid-template-columns: repeat(2, 10vh);
-    grid-gap: 15px;
-  }
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .artigo {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
-  border-radius: 8px; 
-  overflow: hidden;
-  background: #fff;
-  height: 10vh;
-  width: 10vh;
-  min-height: 70px;
-  min-width: 70px;
-  justify-content: center; 
-  align-items: center; 
+    aspect-ratio: 1;
+    min-height: 100px;
+    height: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    transition: all 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+.artigo:hover {
+    background: #f9fdf7;
+    border-color: #8bc34a;
+    transform: scale(1.02);
+}
+
+.dia-numero {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.dia-conteudo {
+    font-size: 0.75rem;
+    color: #666;
+    width: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.artigo.dia-atual {
+    background: #e8f5e9;
+    border-color: #4caf50;
+    border-width: 2px;
+}
+
+.artigo.dia-atual .dia-numero {
+    color: #1b5e20;
+    font-weight: bold;
+}
+
+.artigo.dia-atual::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    background: #4caf50;
+    border-radius: 50%;
+}
+
+.artigo.outro-mes {
+    background: #f8f8f8;
+    opacity: 0.6;
+}
+
+.artigo.outro-mes .dia-numero {
+    color: #aaa;
+}
+
+.artigo.com-evento {
+    border-left: 3px solid #4caf50;
+}
+
+.evento-marcador {
+    width: 6px;
+    height: 6px;
+    background: #4caf50;
+    border-radius: 50%;
+    margin-top: 3px;
+}
+
+.evento-texto {
+    font-size: 0.7rem;
+    color: #4caf50;
+    background: #f1f8e9;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal-evento {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-conteudo {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-titulo {
+    color: #2d5016;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.form-evento {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-grupo label {
+    font-weight: 600;
+    color: #555;
+}
+
+.form-grupo input,
+.form-grupo textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.form-grupo textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.botoes-modal {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-salvar {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-cancelar {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .mes-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .controles-mes {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .artigo {
+        min-height: 80px;
+        padding: 5px;
+    }
+    
+    .dia-numero {
+        font-size: 1rem;
+    }
+    
+    .evento-texto {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .artigo {
+        min-height: 60px;
+    }
+    
+    .dia-numero {
+        font-size: 0.9rem;
+    }
+    
+    .dias-semana-container {
+        gap: 2px;
+    }
+    
+    .dia-semana {
+        padding: 5px;
+        font-size: 0.8rem;
+    }
+}
+.calendario-wrapper {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #2e7d32;
+    color: white;
+    border-radius: 10px;
+}
+
+.mes-titulo {
+    margin: 0;
+    font-size: 24px;
+}
+
+.controles-mes {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-mes {
+    padding: 10px 20px;
+    background-color: white;
+    color: #2e7d32;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-mes:hover {
+    background-color: #e8f5e9;
+}
+
+.btn-hoje {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-hoje:hover {
+    background-color: #388e3c;
+}
+
+.dias-semana-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dia-semana {
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.artigoConteiner {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.artigo {
+    aspect-ratio: 1;
+    border: 2px solid #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+.artigo:hover {
+    background-color: #f1f8e9;
+    border-color: #4caf50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.artigo.dia-atual {
+    background-color: #c8e6c9;
+    border-color: #2e7d32;
+}
+
+.artigo.outro-mes {
+    background-color: #f5f5f5;
+    color: #9e9e9e;
+}
+
+.artigo.com-evento {
+    border-color: #ff9800;
+}
+
+.dia-numero {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.dia-conteudo {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.evento-texto {
+    font-size: 12px;
+    color: #2e7d32;
+    background-color: #e8f5e9;
+    padding: 3px 6px;
+    border-radius: 3px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal-evento {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-conteudo {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-titulo {
+    color: #2e7d32;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.form-grupo {
+    margin-bottom: 20px;
+}
+
+.form-grupo label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-grupo input,
+.form-grupo textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-grupo input:focus,
+.form-grupo textarea:focus {
+    outline: none;
+    border-color: #4caf50;
+}
+
+.form-grupo textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.botoes-modal {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.btn-salvar,
+.btn-cancelar,
+.btn-adicionar {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-salvar {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-salvar:hover {
+    background-color: #388e3c;
+}
+
+.btn-cancelar {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background-color: #d32f2f;
+}
+
+.btn-adicionar {
+    background-color: #ff9800;
+    color: white;
+}
+
+.btn-adicionar:hover {
+    background-color: #f57c00;
+}
+
+.lista-eventos {
+    margin: 20px 0;
+}
+
+.evento-item {
+    background-color: #f9f9f9;
+    border-left: 4px solid #4caf50;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+.evento-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.evento-header h4 {
+    margin: 0;
+    color: #2e7d32;
+    font-size: 18px;
+}
+
+.btn-remover {
+    background: #f44336;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-remover:hover {
+    background: #d32f2f;
+}
+
+.evento-descricao {
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .mes-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .artigo {
+        min-height: 80px;
+    }
+    
+    .dia-numero {
+        font-size: 14px;
+    }
+    
+    .evento-texto {
+        font-size: 10px;
+    }
 }

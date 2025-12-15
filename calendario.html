@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>GreenDate</title>
-        <link rel="icon" type="image/x-icon" href="imgs/favicon.ico">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/calendario.css">
-    </head>
+<head>
+    <title>Calendário - GreenDate</title>
+    <link rel="icon" type="image/x-icon" href="imgs/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/calendario.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
     <header>
         <div class="navbar">
             <a href="index.html" class="logo">
@@ -26,25 +28,59 @@
             </nav>
         </div>
     </header>
-    <body>
-      
-    <div class="artigoConteiner" id="artigoConteiner">
-    </div>
-    </body>
-    <footer>
-
-    </footer>
-</html>
-<script>
     
-const container = document.getElementById('artigoConteiner');
-const numberOfArticles = 31;
-
-for (let i = 0; i < numberOfArticles; i++) {
-    container.innerHTML += `
-        <article class="artigo">
-            <p>`+(i+1)+`</p>
-        </article>
-    `;
-}
-</script>
+    <main class="calendario-wrapper">
+        <div class="mes-header">
+            <h2 class="mes-titulo" id="mesTitulo">Carregando...</h2>
+            <div class="controles-mes">
+                <button class="btn-mes" onclick="mudarMes(-1)">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <button class="btn-mes btn-hoje" onclick="irParaHoje()">
+                    <i class="fas fa-calendar-day"></i> Hoje
+                </button>
+                <button class="btn-mes" onclick="mudarMes(1)">
+                    Próximo <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="dias-semana-container">
+            <div class="dia-semana">Dom</div>
+            <div class="dia-semana">Seg</div>
+            <div class="dia-semana">Ter</div>
+            <div class="dia-semana">Qua</div>
+            <div class="dia-semana">Qui</div>
+            <div class="dia-semana">Sex</div>
+            <div class="dia-semana">Sáb</div>
+        </div>
+        
+        <div class="artigoConteiner" id="artigoConteiner">
+        </div>
+    </main>
+    
+    <div class="modal-evento" id="modalEvento">
+        <div class="modal-conteudo">
+            <h3 class="modal-titulo" id="modalTitulo">Adicionar Evento</h3>
+            <form class="form-evento" id="formEvento">
+                <div class="form-grupo">
+                    <label for="eventoTitulo">Título do Evento:</label>
+                    <input type="text" id="eventoTitulo" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="eventoDescricao">Descrição:</label>
+                    <textarea id="eventoDescricao"></textarea>
+                </div>
+                <div class="botoes-modal">
+                    <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn-salvar">Salvar Evento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>    </footer>
+    
+    <script src="js/calendario.js"></script>
+</body>
+</html>
