@@ -4,11 +4,12 @@ class Calendario {
         this.mesAtual = this.dataAtual.getMonth();
         this.anoAtual = this.dataAtual.getFullYear();
         this.diaSelecionado = null;
-        this.eventos = this.carregarEventos();
+        this.eventoEditandoIndex = null;
         
         this.nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
                            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
         
+        this.gestorEventos = new GerenciadorEventos();
         this.init();
     }
     
@@ -53,7 +54,7 @@ class Calendario {
         for (let i = 1; i <= diasRestantes; i++) {
             this.criarDiaCalendario(i, 'outro-mes');
         }
-    }//aaaaaa 38 de febre aaaaaaaaaaaaaaaaaaaaa eu vou morrer
+    }
     
     criarDiaCalendario(numero, classesAdicionais = '') {
         const container = document.getElementById('artigoConteiner');
@@ -79,12 +80,12 @@ class Calendario {
     
     adicionarEventosAoDia(elemento, dia) {
         const conteudoElement = elemento.querySelector('.dia-conteudo');
-        const chave = `${this.anoAtual}-${this.mesAtual}-${dia}`;
+        const eventos = this.gestorEventos.getEventosPorData(this.anoAtual, this.mesAtual, dia);
         
-        if (this.eventos[chave] && this.eventos[chave].length > 0) {
+        if (eventos.length > 0) {
             elemento.classList.add('com-evento');
             
-            const primeiroEvento = this.eventos[chave][0];
+            const primeiroEvento = eventos[0];
             conteudoElement.innerHTML = `
                 <div class="evento-texto" title="${primeiroEvento.titulo}">
                     ${primeiroEvento.titulo}
@@ -95,7 +96,12 @@ class Calendario {
     
     selecionarDia(dia) {
         this.diaSelecionado = { dia: dia, mes: this.mesAtual, ano: this.anoAtual };
-        const chave = `${this.anoAtual}-${this.mesAtual}-${dia}`;
+        this.eventoEditandoIndex = null;
+        this.mostrarModalEventos(dia);
+    }
+    
+    mostrarModalEventos(dia) {
+        const eventos = this.gestorEventos.getEventosPorData(this.anoAtual, this.mesAtual, dia);
         const dataFormatada = `${dia.toString().padStart(2, '0')}/${(this.mesAtual + 1).toString().padStart(2, '0')}/${this.anoAtual}`;
         
         const modal = document.getElementById('modalEvento');
@@ -103,36 +109,64 @@ class Calendario {
         
         modalConteudo.innerHTML = '';
         
-        if (this.eventos[chave] && this.eventos[chave].length > 0) {
+        if (eventos.length > 0) {
             modalConteudo.innerHTML = `
                 <h3 class="modal-titulo">Eventos - ${dataFormatada}</h3>
                 <div class="lista-eventos">
-                    ${this.eventos[chave].map((evento, index) => `
+                    ${eventos.map((evento, index) => `
                         <div class="evento-item">
+                            ${evento.imagem ? `
+                            <div class="evento-imagem">
+                                <img src="${evento.imagem}" alt="${evento.titulo}" onerror="this.style.display='none'">
+                            </div>
+                            ` : ''}
                             <div class="evento-header">
                                 <h4>${evento.titulo}</h4>
+                                <div class="evento-info">
+                                    <span class="evento-inscritos-modal">
+                                        <i class="fas fa-users"></i> ${this.gestorEventos.getNumeroInscritos(evento.id || evento.titulo) || 0} inscritos
+                                    </span>
+                                    <div class="evento-acoes">
+                                        <button class="btn-editar" onclick="calendario.editarEvento(${index})">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-remover" onclick="calendario.removerEvento(${index})">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <button class="btn-inscrever-modal" onclick="inscreverNoEventoModal('${evento.id || evento.titulo}', '${evento.titulo.replace(/'/g, "\\'")}')">
+                                            <i class="fas fa-user-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <p class="evento-descricao">${evento.descricao || 'Sem descrição'}</p>
                         </div>
                     `).join('')}
                 </div>
                 <div class="botoes-modal">
-                    <button type="button" class="btn-adicionar" onclick="calendario.mostrarFormulario()">
+                    <button type="button" class="btn-adicionar" onclick="calendario.mostrarFormularioAdicionar()">
                         <i class="fas fa-plus"></i> Adicionar Novo Evento
                     </button>
                     <button type="button" class="btn-cancelar" onclick="fecharModal()">Fechar</button>
                 </div>
             `;
         } else {
-            this.mostrarFormulario(dataFormatada);
+            this.mostrarFormularioAdicionar(dataFormatada);
         }
         
         modal.style.display = 'flex';
     }
     
-    mostrarFormulario(dataFormatada = null) {
+    mostrarFormularioAdicionar(dataFormatada = null) {
         const modalConteudo = document.querySelector('.modal-conteudo');
-        const data = dataFormatada || `${this.diaSelecionado.dia.toString().padStart(2, '0')}/${(this.diaSelecionado.mes + 1).toString().padStart(2, '0')}/${this.diaSelecionado.ano}`;
+        const data = dataFormatada || 
+            `${this.diaSelecionado.dia.toString().padStart(2, '0')}/${(this.diaSelecionado.mes + 1).toString().padStart(2, '0')}/${this.diaSelecionado.ano}`;
+        
+        const thumbnails = this.gestorEventos.getThumbnails();
+        
+        const opcoesThumbnails = thumbnails.map(img => 
+            `<option value="${img}">${img.split('/').pop()}</option>`
+        ).join('');
         
         modalConteudo.innerHTML = `
             <h3 class="modal-titulo">Adicionar Evento - ${data}</h3>
@@ -145,114 +179,209 @@ class Calendario {
                     <label for="eventoDescricaoNovo">Descrição:</label>
                     <textarea id="eventoDescricaoNovo"></textarea>
                 </div>
+                <div class="form-grupo">
+                    <label for="eventoThumbnail">Escolha uma thumbnail:</label>
+                    <select id="eventoThumbnail" class="select-thumbnail">
+                        <option value="">Sem thumbnail</option>
+                        ${opcoesThumbnails}
+                    </select>
+                    <div class="thumbnails-previa" id="thumbnailsPrevia"></div>
+                </div>
                 <div class="botoes-modal">
                     <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
-                    <button type="button" class="btn-salvar" onclick="calendario.adicionarEventoForm()">Salvar Evento</button>
+                    <button type="button" class="btn-salvar" onclick="calendario.salvarEvento()">Salvar Evento</button>
                 </div>
             </form>
         `;
         
+        const selectThumbnail = document.getElementById('eventoThumbnail');
+        const previewDiv = document.getElementById('thumbnailsPrevia');
+        
+        const mostrarPreview = () => {
+            const selecionada = selectThumbnail.value;
+            previewDiv.innerHTML = '';
+            
+            if (selecionada) {
+                previewDiv.innerHTML = `
+                    <div class="thumbnail-selecionada">
+                        <img src="${selecionada}" alt="Thumbnail selecionada">
+                        <small>${selecionada.split('/').pop()}</small>
+                    </div>
+                `;
+            }
+        };
+        
+        selectThumbnail.addEventListener('change', mostrarPreview);
+        mostrarPreview();
+        
         const inputTitulo = document.getElementById('eventoTituloNovo');
         if (inputTitulo) {
             inputTitulo.focus();
-            
-            inputTitulo.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    this.adicionarEventoForm();
-                }
-            });
         }
     }
     
-    adicionarEventoForm() {
+    mostrarFormularioEditar(index) {
+        const eventos = this.gestorEventos.getEventosPorData(
+            this.diaSelecionado.ano, 
+            this.diaSelecionado.mes, 
+            this.diaSelecionado.dia
+        );
+        
+        if (!eventos[index]) return;
+        
+        this.eventoEditandoIndex = index;
+        const evento = eventos[index];
+        const dataFormatada = `${this.diaSelecionado.dia.toString().padStart(2, '0')}/${(this.diaSelecionado.mes + 1).toString().padStart(2, '0')}/${this.diaSelecionado.ano}`;
+        
+        const modalConteudo = document.querySelector('.modal-conteudo');
+        const thumbnails = this.gestorEventos.getThumbnails();
+        
+        const opcoesThumbnails = thumbnails.map(img => 
+            `<option value="${img}" ${evento.imagem === img ? 'selected' : ''}>${img.split('/').pop()}</option>`
+        ).join('');
+        
+        modalConteudo.innerHTML = `
+            <h3 class="modal-titulo">Editar Evento - ${dataFormatada}</h3>
+            <form class="form-evento" id="formEventoEditar">
+                <div class="form-grupo">
+                    <label for="eventoTituloEditar">Título do Evento:</label>
+                    <input type="text" id="eventoTituloEditar" required value="${evento.titulo}">
+                </div>
+                <div class="form-grupo">
+                    <label for="eventoDescricaoEditar">Descrição:</label>
+                    <textarea id="eventoDescricaoEditar">${evento.descricao || ''}</textarea>
+                </div>
+                <div class="form-grupo">
+                    <label for="eventoThumbnailEditar">Escolha uma thumbnail:</label>
+                    <select id="eventoThumbnailEditar" class="select-thumbnail">
+                        <option value="">Sem thumbnail</option>
+                        ${opcoesThumbnails}
+                    </select>
+                    <div class="thumbnails-previa" id="thumbnailsPreviaEditar"></div>
+                </div>
+                <div class="botoes-modal">
+                    <button type="button" class="btn-cancelar" onclick="calendario.cancelarEdicao()">Cancelar</button>
+                    <button type="button" class="btn-salvar" onclick="calendario.salvarEventoEditado()">Atualizar Evento</button>
+                </div>
+            </form>
+        `;
+        
+        const selectThumbnail = document.getElementById('eventoThumbnailEditar');
+        const previewDiv = document.getElementById('thumbnailsPreviaEditar');
+        
+        const mostrarPreview = () => {
+            const selecionada = selectThumbnail.value;
+            previewDiv.innerHTML = '';
+            
+            if (selecionada) {
+                previewDiv.innerHTML = `
+                    <div class="thumbnail-selecionada">
+                        <img src="${selecionada}" alt="Thumbnail selecionada">
+                        <small>${selecionada.split('/').pop()}</small>
+                    </div>
+                `;
+            }
+        };
+        
+        selectThumbnail.addEventListener('change', mostrarPreview);
+        mostrarPreview();
+        
+        const inputTitulo = document.getElementById('eventoTituloEditar');
+        if (inputTitulo) {
+            inputTitulo.focus();
+        }
+    }
+    
+    editarEvento(index) {
+        this.mostrarFormularioEditar(index);
+    }
+    
+    cancelarEdicao() {
+        this.eventoEditandoIndex = null;
+        this.mostrarModalEventos(this.diaSelecionado.dia);
+    }
+    
+    salvarEvento() {
         if (!this.diaSelecionado) return;
         
         const tituloInput = document.getElementById('eventoTituloNovo');
         const descricaoInput = document.getElementById('eventoDescricaoNovo');
+        const thumbnailSelect = document.getElementById('eventoThumbnail');
         
-        if (!tituloInput || !descricaoInput) return;
+        if (!tituloInput || !descricaoInput || !thumbnailSelect) return;
         
         const titulo = tituloInput.value.trim();
         const descricao = descricaoInput.value.trim();
+        const imagem = thumbnailSelect.value.trim();
         
-        if (titulo) {
-            const evento = {
-                dia: this.diaSelecionado.dia,
-                mes: this.diaSelecionado.mes,
-                ano: this.diaSelecionado.ano,
+        if (!titulo) {
+            alert('Por favor, insira um título para o evento.');
+            tituloInput.focus();
+            return;
+        }
+        
+        this.gestorEventos.adicionarEvento(
+            this.diaSelecionado.ano,
+            this.diaSelecionado.mes,
+            this.diaSelecionado.dia,
+            {
                 titulo: titulo,
-                descricao: descricao
-            };
-            
-            this.adicionarEvento(evento);
-            this.selecionarDia(this.diaSelecionado.dia);
-        }
-    }
-    
-    adicionarEvento(evento) {
-        const chave = `${evento.ano}-${evento.mes}-${evento.dia}`;
-        
-        if (!this.eventos[chave]) this.eventos[chave] = [];
-        
-        this.eventos[chave].push({
-            titulo: evento.titulo,
-            descricao: evento.descricao,
-            data: new Date()
-        });
-        
-        this.salvarEventos();
-        this.renderizarCalendario();
-    }
-    
-    removerEvento(chave, index) {
-        if (this.eventos[chave]) {
-            this.eventos[chave].splice(index, 1);
-            
-            if (this.eventos[chave].length === 0) {
-                delete this.eventos[chave];
+                descricao: descricao,
+                imagem: imagem
             }
-            
-            this.salvarEventos();
+        );
+        
+        this.renderizarCalendario();
+        this.mostrarModalEventos(this.diaSelecionado.dia);
+    }
+    
+    salvarEventoEditado() {
+        if (!this.diaSelecionado || this.eventoEditandoIndex === null) return;
+        
+        const tituloInput = document.getElementById('eventoTituloEditar');
+        const descricaoInput = document.getElementById('eventoDescricaoEditar');
+        const thumbnailSelect = document.getElementById('eventoThumbnailEditar');
+        
+        if (!tituloInput || !descricaoInput || !thumbnailSelect) return;
+        
+        const titulo = tituloInput.value.trim();
+        const descricao = descricaoInput.value.trim();
+        const imagem = thumbnailSelect.value.trim();
+        
+        if (!titulo) {
+            alert('Por favor, insira um título para o evento.');
+            tituloInput.focus();
+            return;
+        }
+        
+        this.gestorEventos.editarEvento(
+            this.diaSelecionado.ano,
+            this.diaSelecionado.mes,
+            this.diaSelecionado.dia,
+            this.eventoEditandoIndex,
+            {
+                titulo: titulo,
+                descricao: descricao,
+                imagem: imagem
+            }
+        );
+        
+        this.eventoEditandoIndex = null;
+        this.renderizarCalendario();
+        this.mostrarModalEventos(this.diaSelecionado.dia);
+    }
+    
+    removerEvento(index) {
+        if (confirm('Tem certeza que deseja remover este evento?')) {
+            this.gestorEventos.removerEvento(
+                this.diaSelecionado.ano,
+                this.diaSelecionado.mes,
+                this.diaSelecionado.dia,
+                index
+            );
+            this.mostrarModalEventos(this.diaSelecionado.dia);
             this.renderizarCalendario();
-            
-            this.fecharModal();
-            const [ano, mes, dia] = chave.split('-');
-            setTimeout(() => {
-                this.selecionarDia(parseInt(dia));
-            }, 10);
         }
-    }
-    
-    carregarEventos() {
-        const eventosSalvos = localStorage.getItem('greenDateEventos');
-        
-        if (!eventosSalvos) {
-            const hoje = new Date();
-            const mes = hoje.getMonth();
-            const ano = hoje.getFullYear();
-            
-            return {
-                [`${ano}-${mes}-${hoje.getDate()}`]: [
-                    { 
-                        titulo: "🌿 Reunião de Planejamento", 
-                        descricao: "Discussão dos próximos eventos ambientais" 
-                    }
-                ],
-                [`${ano}-${mes}-${hoje.getDate() + 3}`]: [
-                    { 
-                        titulo: "♻️ Coleta Seletiva", 
-                        descricao: "Coleta de materiais recicláveis no centro" 
-                    }
-                ]
-            };
-        }
-        
-        return JSON.parse(eventosSalvos);
-    }
-    
-    salvarEventos() {
-        localStorage.setItem('greenDateEventos', JSON.stringify(this.eventos));
     }
     
     mudarMes(direcao) {
@@ -296,27 +425,35 @@ class Calendario {
         const modal = document.getElementById('modalEvento');
         modal.style.display = 'none';
         this.diaSelecionado = null;
+        this.eventoEditandoIndex = null;
     }
 }
 
 let calendario;
 
 function mudarMes(direcao) {
-    if (calendario) {
-        calendario.mudarMes(direcao);
-    }
+    if (calendario) calendario.mudarMes(direcao);
 }
 
 function irParaHoje() {
-    if (calendario) {
-        calendario.irParaHoje();
-    }
+    if (calendario) calendario.irParaHoje();
 }
 
 function fecharModal() {
+    if (calendario) calendario.fecharModal();
+}
+
+function inscreverNoEventoModal(eventoId, eventoTitulo) {
+    localStorage.setItem('eventoSelecionado', eventoTitulo);
+    localStorage.setItem('eventoSelecionadoId', eventoId);
+    window.location.href = 'incricoes.html';
+}
+
+function adicionarEventoManual(dataString, titulo, descricao, imagemUrl) {
     if (calendario) {
-        calendario.fecharModal();
+        return calendario.gestorEventos.adicionarEventoManual(dataString, titulo, descricao, imagemUrl);
     }
+    return false;
 }
 
 document.addEventListener('DOMContentLoaded', () => {

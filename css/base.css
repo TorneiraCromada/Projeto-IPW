@@ -56,21 +56,6 @@ a.logo {
   border-bottom: 2px solid #a5d6a7;
 }
 
-.user {
-  display: flex;
-  margin-right: 0px;
-  gap: 10px;
-}
-
-.user img {
-  height: 40px;
-  border-radius: 20px;
-}
-
-:hover .user img {
-  cursor: pointer;
-}
-
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
