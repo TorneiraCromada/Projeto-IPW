@@ -6,98 +6,43 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="css/base.css">
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/eventos.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
-    <header>
-        <div class="navbar">
-            <a href="index.html" class="logo">
-                <figure>
-                    <img src="imgs/logoprov.png" alt="Logo" />
-                </figure>
-                <h1>GreenDate</h1>
-            </a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="calendario.html">Calendário</a></li>
-                    <li><a href="eventos.html">Eventos</a></li>
-                    <li><a href="incricoes.html">Inscrições</a></li>
-                    <li><a href="sobrenos.html">Sobre nós</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
     <body>
-      <div class="carousel">
-        <button class="prev hidden"><</button>
-        <ul>
-            <li><h2>Slide 1 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 2 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 3 — Lorem ipsum dolor sit amet...</h2></li>
-            <li><h2>Slide 4 — Lorem ipsum dolor sit amet...</h2></li>
-        </ul>
-        <button class="next">></button>
-    </div>
-    <div class="artigoConteiner">
-        <article class="artigo">
-            <figure>
-                <img src="imgs/tempImg.png">
-            </figure>
-            <h3>Evento Legal e divertido</h3>
-            <p>UaU Esse evento é mesmo legal e divertido!!</p>
-        </article>
-                <article class="artigo">
-            <figure>
-                <img src="imgs/tempImg.png">
-            </figure>
-            <h3>Evento Legal e divertido</h3>
-            <p>UaU Esse evento é mesmo legal e divertido!!</p>
-        </article>
-                <article class="artigo">
-            <figure>
-                <img src="imgs/tempImg.png">
-            </figure>
-            <h3>Evento Legal e divertido</h3>
-            <p>UaU Esse evento é mesmo legal e divertido!!</p>
-        </article>
-    </div>
+        <header>
+            <div class="navbar">
+                <a href="index.html" class="logo">
+                    <figure>
+                        <img src="imgs/logoprov.png" alt="Logo" />
+                    </figure>
+                    <h1>GreenDate</h1>
+                </a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="calendario.html">Calendário</a></li>
+                        <li><a href="index.html">Eventos</a></li>
+                        <li><a href="incricoes.html">Inscrições</a></li>
+                        <li><a href="sobrenos.html">Sobre nós</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <main>
+            <div class="seilapo">
+                <figure><img src="imgs/tempImg.png" alt="tempImg"></figure>
+                <p class="image-text">EVENTOS</p>
+            </div>
+            
+            <div class="artigoConteiner" id="artigoConteiner">
+            </div>
+        </main>
+        
+        <footer>
+        </footer>
+        
+        <script src="js/eventos.js"></script>
+        <script src="js/exibirEventos.js"></script>
     </body>
-    <footer>
-    </footer>
 </html>
-<script>
-    const carousel = document.querySelector('.carousel ul');
-    const slides = document.querySelectorAll('.carousel li');
-    const btnPrev = document.querySelector('.carousel .hidden');
-    const btnNext = document.querySelector('.carousel .next');
-    let index = 0;
-
-    function showSlide(i) {
-    index = Math.max(0, Math.min(i, slides.length - 1));
-    carousel.scrollTo({
-        left: slides[index].offsetLeft,
-        behavior: 'smooth'
-    });
-    updateButtons();
-    }
-
-    function updateButtons() {
-
-    if (index === 0) {
-        btnPrev.classList.add('hidden');
-    } else {
-        btnPrev.classList.remove('hidden');
-    }
-
-    if (index === slides.length - 1) {
-        btnNext.classList.add('hidden');
-    } else {
-        btnNext.classList.remove('hidden');
-    }
-    }
-
-    btnPrev.addEventListener('click', () => showSlide(index - 1));
-    btnNext.addEventListener('click', () => showSlide(index + 1));
-
-
-    updateButtons();
-</script>
